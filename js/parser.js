@@ -94,7 +94,7 @@ function logBetaMessage(str,urgent){
             consoleError(errorString);
             errorStrings.push(errorString);
         }
-    }  
+    }
 }
 
 function blankLineHandle(state) {
@@ -117,7 +117,7 @@ if (typeof Object.assign != 'function') {
       if (target === undefined || target === null) {
         throw new TypeError('Cannot convert undefined or null to object');
       }
- 
+
       var output = Object(target);
       for (var index = 1; index < arguments.length; index++) {
         var source = arguments[index];
@@ -162,19 +162,19 @@ var codeMirrorFn = function() {
         for (var i=0;i<state.legend_synonyms.length;i++) {
             var entry = state.legend_synonyms[i];
             if (entry[0]==candname) {
-                logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);                                        
+                logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);
             }
         }
         for (var i=0;i<state.legend_aggregates.length;i++) {
             var entry = state.legend_aggregates[i];
             if (entry[0]==candname) {
-                logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);                                        
+                logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);
             }
         }
         for (var i=0;i<state.legend_properties.length;i++) {
             var entry = state.legend_properties[i];
             if (entry[0]==candname) {
-                logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);                                        
+                logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);
             }
         }
     }
@@ -183,7 +183,7 @@ var codeMirrorFn = function() {
     var logicWords = ['all', 'no', 'on', 'some'];
     var sectionNames = ['objects', 'legend', 'sounds', 'collisionlayers', 'rules', 'winconditions', 'levels'];
 	var commandwords = ["sfx0","sfx1","sfx2","sfx3","sfx4","sfx5","sfx6","sfx7","sfx8","sfx9","sfx10","cancel","checkpoint","restart","win","message","again"];
-    var reg_commands = /\s*(sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|cancel|checkpoint|restart|win|message|again)\s*/;
+    var reg_commands = /\s*(sfx0|sfx1|sfx2|sfx3|Sfx4|sfx5|sfx6|sfx7|sfx8|sfx9|sfx10|cancel|checkpoint|restart|undo|win|message|again)\s*/;
     var reg_name = /[\w]+\s*/;///\w*[a-uw-zA-UW-Z0-9_]/;
     var reg_number = /[\d]+/;
     var reg_soundseed = /\d+\b/;
@@ -257,7 +257,7 @@ var codeMirrorFn = function() {
             }
 
             var original_case_namesCopy = Object.assign({},state.original_case_names);
-            
+
             var nstate = {
               lineNumber: state.lineNumber,
 
@@ -297,7 +297,7 @@ var codeMirrorFn = function() {
               STRIDE_MOV : state.STRIDE_MOV
             };
 
-            return nstate;        
+            return nstate;
         },
         blankLine: function(state) {
             if (state.section === 'levels') {
@@ -410,7 +410,7 @@ var codeMirrorFn = function() {
                         if (sectionIndex===-1) {
                             logError('no such section as "' + state.section.toUpperCase() + '".', state.lineNumber);
                         } else {
-                            logError('section "' + state.section.toUpperCase() + '" is out of order, must follow  "' + sectionNames[sectionIndex - 1].toUpperCase() + '".', state.lineNumber);                            
+                            logError('section "' + state.section.toUpperCase() + '" is out of order, must follow  "' + sectionNames[sectionIndex - 1].toUpperCase() + '".', state.lineNumber);
                         }
                     }
 
@@ -448,8 +448,8 @@ var codeMirrorFn = function() {
                             /*
                             if (state.names.indexOf(n)!==-1) {
                                 logError('Object "'+n+'" has been declared to be multiple different things',state.legend_properties[i].lineNumber);
-                            }                           
-                            */ 
+                            }
+                            */
                             state.names.push(n);
                         }
                     }
@@ -494,7 +494,7 @@ var codeMirrorFn = function() {
                             var match_name = sol ? stream.match(reg_name, true) : stream.match(/[^\s\()]+\s*/,true);
                             if (match_name == null) {
                                 stream.match(reg_notcommentstart, true);
-                                if (stream.pos>0){                                
+                                if (stream.pos>0){
                                     logWarning('Unknown junk in object section (possibly: sprites have to be 5 pixels wide and 5 pixels high exactly. Or maybe: the main names for objects have to be words containing only the letters a-z0.9 - if you want to call them something like ",", do it in the legend section).',state.lineNumber);
                                 }
                                 return 'ERROR';
@@ -507,7 +507,7 @@ var codeMirrorFn = function() {
                                 for (var i=0;i<state.legend_synonyms.length;i++) {
                                 	var entry = state.legend_synonyms[i];
                                 	if (entry[0]==candname) {
-                                    	logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);                                		
+                                    	logError('Name "' + candname.toUpperCase() + '" already in use.', state.lineNumber);
                                 	}
                                 }
                                 if (keyword_array.indexOf(candname)>=0) {
@@ -634,7 +634,7 @@ var codeMirrorFn = function() {
                     {
                         if (sol) {
                             var ok = true;
-                            var splits = reg_notcommentstart.exec(stream.string)[0].split(/\s/).filter(function(v) {return v !== ''});                          
+                            var splits = reg_notcommentstart.exec(stream.string)[0].split(/\s/).filter(function(v) {return v !== ''});
                             splits.push(state.lineNumber);
                             state.sounds.push(splits);
                         }
@@ -651,7 +651,7 @@ var codeMirrorFn = function() {
                         {
                             state.tokenIndex++;
                             return 'SOUND';
-                        } 
+                        }
                        	candname = stream.match(/[^\[\|\]\s]*/, true);
                        	if (candname!== null ) {
                        		var m = candname[0].trim();
@@ -692,31 +692,31 @@ var codeMirrorFn = function() {
                             	n = n.toLowerCase();
                             	if (n in state.objects) {
                             		return [n];
-                            	} 
+                            	}
 
 
                                 for (var i=0;i<state.legend_synonyms.length;i++) {
                                     var a = state.legend_synonyms[i];
-                                    if (a[0]===n) {           
+                                    if (a[0]===n) {
                                         return substitutor(a[1]);
                                     }
                                 }
 
                             	for (var i=0;i<state.legend_aggregates.length;i++) {
                             		var a = state.legend_aggregates[i];
-                            		if (a[0]===n) {           
+                            		if (a[0]===n) {
                             			logError('"'+n+'" is an aggregate (defined using "and"), and cannot be added to a single layer because its constituent objects must be able to coexist.', state.lineNumber);
-                            			return [];         
+                            			return [];
                             		}
                             	}
                             	for (var i=0;i<state.legend_properties.length;i++) {
                             		var a = state.legend_properties[i];
-                            		if (a[0]===n) {  
+                            		if (a[0]===n) {
                                         var result = [].concat.apply([],a.slice(1).map(substitutor));
                             			return result;
                             		}
                             	}
-                            	logError('Cannot add "' + candname.toUpperCase() + '" to a collision layer; it has not been declared.', state.lineNumber);                                
+                            	logError('Cannot add "' + candname.toUpperCase() + '" to a collision layer; it has not been declared.', state.lineNumber);
                             	return [];
                             };
                             if (candname==='background' ) {
@@ -734,7 +734,7 @@ var codeMirrorFn = function() {
                                 logError("no layers found.",state.lineNumber);
                                 return 'ERROR';
                             }
-                            
+
                             var foundOthers=[];
                             for (var i=0;i<ar.length;i++){
                                 var candname = ar[i];
@@ -753,12 +753,12 @@ var codeMirrorFn = function() {
                                     warningStr+=foundOthers[i]+", ";
                                 }
                                 warningStr+=state.collisionLayers.length-1;
-                                logWarning(warningStr +'). You should fix this!',state.lineNumber);                                        
+                                logWarning(warningStr +'). You should fix this!',state.lineNumber);
                             }
 
                             state.collisionLayers[state.collisionLayers.length - 1] = state.collisionLayers[state.collisionLayers.length - 1].concat(ar);
                             if (ar.length>0) {
-                            	return 'NAME';                            
+                            	return 'NAME';
                             } else {
                             	return 'ERROR';
                             }
@@ -816,22 +816,22 @@ var codeMirrorFn = function() {
 	                                	n = n.toLowerCase();
 	                                	if (n in state.objects) {
 	                                		return [n];
-	                                	} 
+	                                	}
 	                                	for (var i=0;i<state.legend_synonyms.length;i++) {
 	                                		var a = state.legend_synonyms[i];
-	                                		if (a[0]===n) {   
+	                                		if (a[0]===n) {
 	                                			return substitutor(a[1]);
 	                                		}
 	                                	}
 	                                	for (var i=0;i<state.legend_aggregates.length;i++) {
 	                                		var a = state.legend_aggregates[i];
-	                                		if (a[0]===n) {                                			
+	                                		if (a[0]===n) {
 	                                			return [].concat.apply([],a.slice(1).map(substitutor));
 	                                		}
 	                                	}
 	                                	for (var i=0;i<state.legend_properties.length;i++) {
 	                                		var a = state.legend_properties[i];
-	                                		if (a[0]===n) {         
+	                                		if (a[0]===n) {
 	                                			logError("Cannot define an aggregate (using 'and') in terms of properties (something that uses 'or').", state.lineNumber);
 	                                			ok=false;
 	                                			return [n];
@@ -862,24 +862,24 @@ var codeMirrorFn = function() {
 	                                	n = n.toLowerCase();
 	                                	if (n in state.objects) {
 	                                		return [n];
-	                                	} 
+	                                	}
 
 	                                	for (var i=0;i<state.legend_synonyms.length;i++) {
 	                                		var a = state.legend_synonyms[i];
-	                                		if (a[0]===n) {   
+	                                		if (a[0]===n) {
 	                                			return substitutor(a[1]);
 	                                		}
 	                                	}
 	                                	for (var i=0;i<state.legend_aggregates.length;i++) {
 	                                		var a = state.legend_aggregates[i];
-	                                		if (a[0]===n) {           
+	                                		if (a[0]===n) {
 	                                			logError("Cannot define a property (using 'or') in terms of aggregates (something that uses 'and').", state.lineNumber);
-	                                			ok=false;          
+	                                			ok=false;
 	                                		}
 	                                	}
 	                                	for (var i=0;i<state.legend_properties.length;i++) {
 	                                		var a = state.legend_properties[i];
-	                                		if (a[0]===n) {  
+	                                		if (a[0]===n) {
 	                                			return [].concat.apply([],a.slice(1).map(substitutor));
 	                                		}
 	                                	}
@@ -940,22 +940,22 @@ var codeMirrorFn = function() {
 	                                	n = n.toLowerCase();
 	                                	if (n in state.objects) {
 	                                		return true;
-	                                	} 
+	                                	}
 	                                	for (var i=0;i<state.legend_aggregates.length;i++) {
 	                                		var a = state.legend_aggregates[i];
-	                                		if (a[0]===n) {                                			
+	                                		if (a[0]===n) {
 	                                			return true;
 	                                		}
 	                                	}
 	                                	for (var i=0;i<state.legend_properties.length;i++) {
 	                                		var a = state.legend_properties[i];
-	                                		if (a[0]===n) {  
+	                                		if (a[0]===n) {
 	                                			return true;
 	                                		}
 	                                	}
 	                                	for (var i=0;i<state.legend_synonyms.length;i++) {
 	                                		var a = state.legend_synonyms[i];
-	                                		if (a[0]===n) {  
+	                                		if (a[0]===n) {
 	                                			return true;
 	                                		}
 	                                	}
@@ -980,7 +980,7 @@ var codeMirrorFn = function() {
                         break;
                     }
                 case 'rules':
-                    {                    	
+                    {
                         if (sol) {
                             var rule = reg_notcommentstart.exec(stream.string)[0];
                             state.rules.push([rule, state.lineNumber, mixedCase]);
@@ -1030,7 +1030,7 @@ var codeMirrorFn = function() {
                                 } else if (commandwords.indexOf(m)>=0) {
 									if (m==='message') {
 										state.tokenIndex=-4;
-									}                                	
+									}
                                 	return 'COMMAND';
                                 } else {
                                     logError('Name "' + m + '", referred to in a rule, does not exist.', state.lineNumber);
@@ -1048,7 +1048,7 @@ var codeMirrorFn = function() {
                         	var splitted = tokenized[0].split(/\s/);
                         	var filtered = splitted.filter(function(v) {return v !== ''});
                             filtered.push(state.lineNumber);
-                            
+
                             state.winconditions.push(filtered);
                             state.tokenIndex = -1;
                         }
@@ -1111,16 +1111,16 @@ var codeMirrorFn = function() {
                                     {
                                         lastlevel.push(state.lineNumber);
                                     }
-                                    lastlevel.push(line);  
+                                    lastlevel.push(line);
 
-                                    if (lastlevel.length>1) 
+                                    if (lastlevel.length>1)
                                     {
                                         if (line.length!=lastlevel[1].length) {
                                             logWarning("Maps must be rectangular, yo (In a level, the length of each row must be the same).",state.lineNumber);
                                         }
                                     }
                                 }
-                                
+
                             }
                         } else {
                             if (state.tokenIndex == 1) {
@@ -1141,28 +1141,28 @@ var codeMirrorFn = function() {
                         }
                         break;
                     }
-	                
+
 	                default://if you're in the preamble
 	                {
 	            		if (sol) {
 	            			state.tokenIndex=0;
 	            		}
 	            		if (state.tokenIndex==0) {
-		                    var match = stream.match(/\s*\w+\s*/);	                    
+		                    var match = stream.match(/\s*\w+\s*/);
 		                    if (match!==null) {
 		                    	var token = match[0].trim();
 		                    	if (sol) {
 		                    		if (['title','author','homepage','background_color','text_color','key_repeat_interval','realtime_interval','again_interval','flickscreen','zoomscreen','color_palette','youtube'].indexOf(token)>=0) {
-		                    			
+
                                         if (token==='youtube' || token==='author' || token==='title') {
                                             stream.string=mixedCase;
                                         }
-                                        
+
                                         var m2 = stream.match(reg_notcommentstart, false);
-                                        
+
 		                    			if(m2!=null) {
                                             state.metadata.push(token);
-		                    				state.metadata.push(m2[0].trim());                                            
+		                    				state.metadata.push(m2[0].trim());
 		                    			} else {
 		                    				logError('MetaData "'+token+'" needs a value.',state.lineNumber);
 		                    			}
@@ -1182,7 +1182,7 @@ var codeMirrorFn = function() {
 		                    		return 'ERROR';
 		                    	}
 		                    	return 'METADATA';
-		                    }       
+		                    }
 		               	} else {
 		               		stream.match(reg_notcommentstart, true);
 		               		return "METADATATEXT";
