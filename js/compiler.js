@@ -797,7 +797,10 @@ function processRuleString(rule, state, curRules)
 			if (commands.length>1 || rhs_cells.length>0) {
 				logError('The CANCEL command can only appear by itself on the right hand side of the arrow.', lineNumber);
 			}
-		}
+		} else if (cmd==='undo') {
+			if (commands.length>1 || rhs_cells.length>0) {
+				logError('The UNDO command can only appear by itself on the right hand side of the arrow.', lineNumber);
+			}
 	}
 
 	//next up - replace relative directions with absolute direction
